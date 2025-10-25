@@ -1,0 +1,35 @@
+﻿@model List<HVK.Models.PetVaccination>
+
+<h1>
+    Vaccination
+</h1>
+
+<div class="form-container">
+    <form asp-action="Index" asp-controller="Vaccination" method="post">
+        @{
+            int id = -1;
+        }
+        @for (int index = 0; index < Model.Count(); index++)
+        {
+            id = Model[index].PetId;
+            <input asp-for="@Model[index].VaccinationId" type="hidden" />
+            <input asp-for="@Model[index].PetId" type="hidden" />
+
+            <div>
+                <label asp-for="@Model[index].VaccinationChecked">@DataAccessPoint.GetVaccinationByVaccinationId(Model[index].VaccinationId).Name</label>
+                <input asp-for="@Model[index].VaccinationChecked" />
+                <span asp-validation-for="@Model[index].VaccinationChecked" class="invalidInputField"></span>
+
+                <label asp-for="@Model[index].ExpiryDate"></label>
+                <input asp-for="@Model[index].ExpiryDate" type="date" />
+                <span asp-validation-for="@Model[index].ExpiryDate" class="invalidInputField"></span>
+            </div>
+        }
+
+        <div id="submitAndCancelContainer">
+            <input type="submit" id="submit" value="Save" />
+            <p id="cancel">@Html.ActionLink("Cancel", "ViewPet", "PetManagement", new { id = id })</p>
+        </div>
+
+    </form>
+</div>

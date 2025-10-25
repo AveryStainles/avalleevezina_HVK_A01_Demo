@@ -1,0 +1,67 @@
+﻿@model HVK.Models.Customer
+
+<div>
+    <h1>View @Model.GetFullName</h1>
+    @if (DataAccessPoint.GetLoginUserState().UserType == Customer.UserTypes.Employee)
+    {
+        <p>@Html.ActionLink("View All Customers", "Index", "CustomerAccountManagement", new { ownerId = @Model.HVKUserId })</p>
+    }
+    <p>@Html.ActionLink("Pet Profile", "Index", "PetManagement", new { ownerId = @Model.HVKUserId })</p>
+    <p>@Html.ActionLink("Create New Pet Profile", "CreatePet", "PetManagement", new { ownerId = @Model.HVKUserId })</p>
+    <p>@Html.ActionLink("Make A Reservation", "Index", "ManageReservation", new { ownerId = @Model.HVKUserId })</p>
+    <p>@Html.ActionLink("Reservation History", "Index", "ManageReservation", new { ownerId = @Model.HVKUserId })</p>
+    <a href="@Url.Action("UpdateCustomer", "CustomerAccountManagement", new { id = @Model.HVKUserId })"><img src="~/images/pencil.png" alt="Edit" class="icon" /></a>
+
+    <hr />
+    <h2>User Information</h2>
+
+    <h3>Customer</h3>
+    <ul>
+        <li>ID: @Model.HVKUserId</li>
+        <li>First Name: @Model.FirstName</li>
+        <li>Last Name: @Model.LastName</li>
+        <li>Email: @Model.Email</li>
+        <li>Street: @Model.Street</li>
+        <li>City: @Model.City</li>
+        <li>Province: @Model.Province</li>
+        <li>Postal Code: @Model.PostalCode</li>
+        <li>Phone: @Model.Phone</li>
+        <li>Cell Phone: @Model.CellPhone</li>
+    </ul>
+
+    <h3>Emergency contact</h3>
+    <ul>
+        <li>First Name: @Model.EmergencyContactFirstName</li>
+        <li>Last Name: @Model.EmergencyContactLastName</li>
+        <li>Phone: @Model.EmergencyContactPhone</li>
+    </ul>
+    <hr />
+    <h2>Pet Profile Summary</h2>
+    @if ((DataAccessPoint.GetAllCustomerPets(Model.HVKUserId) ?? new List<Pet>()).Count == 0)
+    {
+        <p>No pets found on profile. @Html.ActionLink("Add Pet?", "CreatePet", "PetManagement", new { ownerId = @Model.HVKUserId })</p>
+    }
+    else
+    {
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Reservation Status</th>
+                    <th>Vaccination Status</th>
+                    <th>Sterilized</th>
+                </tr>
+                @foreach (var pet in DataAccessPoint.GetAllCustomerPets(Model.HVKUserId) ?? new List<Pet>())
+                {
+                    <tr>
+                        <th>@Html.ActionLink($"{pet.Name}", "ViewPet", "PetManagement", new { id = pet.PetId })</th>
+                        <th>Complete</th>
+                        <th>@DataAccessPoint.GetVaccinationStatus(pet.PetId)</th>
+                        <th>@pet.Sterilized</th>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    }
+</div>

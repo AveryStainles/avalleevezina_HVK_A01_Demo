@@ -1,0 +1,22 @@
+﻿@model HVK.Models.Pet
+@using HVK.Models;
+
+<div>
+    <h1>
+        Delete Pet: @Model.Name (@Model.PetId | @DataAccessPoint.GetCustomerById(Model.HVKUserId).GetFullName;)
+    </h1>
+</div>
+
+<div class="form-container">
+    <h2>Are You sure you want to delete @Model.Name?</h2>
+    <form asp-action="ConfirmedDeletePet" asp-controller="PetManagement">
+        <div id="submitAndCancelContainer">
+            <input type="hidden" asp-for="PetId" value="@Model.PetId" />
+
+            <input type="submit" id="submit" value="Yes" />
+            <p id="cancel">@Html.ActionLink("Cancel", "Index", "PetManagement", new { ownerId = Model.HVKUserId })</p>
+        </div>
+
+    </form>
+</div>
+

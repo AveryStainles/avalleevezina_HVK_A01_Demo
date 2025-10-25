@@ -1,0 +1,53 @@
+﻿@model HVK.Models.Pet
+
+<div>
+    <h1>View @Model.Name</h1>
+    @if (DataAccessPoint.GetLoginUserState().UserType == Customer.UserTypes.Employee)
+    {
+        <p>@Html.ActionLink("View All Customers", "Index", "CustomerAccountManagement", null)</p>
+        <p>@Html.ActionLink("View All Pets", "Index", "PetManagement", null)</p>
+    }
+    <p>@Html.ActionLink($"View Owner Account", "ViewCustomer", "CustomerAccountManagement", new { id = Model.HVKUserId })</p>
+    <p>@Html.ActionLink("View Owner Pet Profile", "Index", "PetManagement", new { ownerId = Model.HVKUserId })</p>
+    <a href="@Url.Action("UpdatePet", "PetManagement", new { id = Model.PetId})"><img src="~/images/pencil.png" alt="Edit" class="icon" /></a>
+    <a href="@Url.Action("DeletePet", "PetManagement", new { id = Model.PetId})"><img src="~/images/trash-can.png" alt="Delete" class="icon" /></a>
+
+    <hr />
+    <h2>Pet Information</h2>
+    <ul>
+        <li>ID: @Model.PetId</li>
+        <li>Owner: @Html.ActionLink($"{DataAccessPoint.GetCustomerById(Model.HVKUserId).GetFullName}", "ViewCustomer", "CustomerAccountManagement", new { id = @Model.HVKUserId })</li>
+        <li>Pet Name: @Model.Name</li>
+        <li>Gender: @Model.Gender</li>
+        <li>Breed: @Model.Breed</li>
+        <li>Birth Year: @Model.Birthyear</li>
+        <li>Pet Size: @Model.DogSize</li>
+        <li>Sterilized: @Model.Sterilized</li>
+    </ul>
+    <ul>
+        @if (Model.Barker == true)
+        {
+            <li>Barker</li>
+        }
+        @if (Model.Climber == true)
+        {
+            <li>Climber</li>
+        }
+        @if ((Model.SpecialNotes ?? "").Length > 0)
+        {
+            <li>Special Notes: @Model.SpecialNotes</li>
+        }
+    </ul>
+
+    <hr />
+    <h2>Pet Vaccinations</h2>
+    <a href="@Url.Action("Index", "Vaccination", new { petId = Model.PetId})"><img src="~/images/pencil.png" alt="Edit" class="icon" /></a>
+    <ul>
+        @foreach (PetVaccination petVaccination in DataAccessPoint.GetPetVaccinationByPetId(Model.PetId))
+        {
+            <li>
+                @DataAccessPoint.GetVaccinationByVaccinationId(petVaccination.VaccinationId).Name: @petVaccination.VaccinationChecked
+            </li>
+        }
+    </ul>
+</div>

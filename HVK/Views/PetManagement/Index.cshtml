@@ -1,0 +1,93 @@
+﻿@model IEnumerable<HVK.Models.Pet>
+
+@if (ViewData["sortOwner"] == null) { ViewData["sortOwner"] = "owner"; }
+@if (ViewData["sortName"] == null) { ViewData["sortName"] = "name"; }
+
+<div>
+    <h1>Pet Management </h1>
+    <hr />
+</div>
+
+@if (ViewData["ownerId"] == null)
+{
+    if (Model.Count() == 0)
+    {
+        <h2>No Pet Found!</h2>
+    }
+    else
+    {
+        <h2>View all pets</h2>
+    }
+
+    // Search For any occurance of field in pet names or customer full-names
+    <div class="form-container search-bar">
+        <form asp-action="SortPet" asp-controller="PetManagement" method="get">
+            <div>
+                <label>Find By Name:<input type="text" name="searchString" id="searchString" /></label>
+                <input type="submit" name="search" value="search" />
+                <a asp-action="Index">Clear Search</a>
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <h2>View All @DataAccessPoint.GetCustomerById(Int32.Parse(ViewData["ownerId"] + "")).GetFullName's Pets</h2>
+    if (DataAccessPoint.GetLoginUserState().UserType == Customer.UserTypes.Employee)
+    {
+        <p>@Html.ActionLink("View All Pets", "Index", "PetManagement", new { ownerId = "" })</p>
+        <p>@Html.ActionLink($"View Owner Profile", "ViewCustomer", "CustomerAccountManagement", new { id = Int32.Parse(ViewData["ownerId"] + "") })</p>
+    }
+    else
+    {
+        <p>@Html.ActionLink($"View Profile", "ViewCustomer", "CustomerAccountManagement", new { id = Int32.Parse(ViewData["ownerId"] + "") })</p>
+    }
+    <p>@Html.ActionLink("Create New Pet Profile", "CreatePet", "PetManagement", new { ownerId = ViewData["ownerId"] })</p>
+}
+
+<div class="table-container">
+    @if (Model != null)
+    {
+        @* Table Content *@
+        <table>
+            @* Table Header *@
+            <tr>
+                @if (ViewData["ownerId"] == null)
+                {
+                    <th><a asp-action="SortPet" asp-controller="PetManagement" asp-route-sortOrder="@ViewData["sortOwner"]">Owner Name</a></th>
+                    <th><a asp-action="SortPet" asp-controller="PetManagement" asp-route-sortOrder="@ViewData["sortName"]">Pet Name</a></th>
+                }
+                else
+                {
+                    <th>Owner Name</th>
+                    <th>Pet Name</th>
+                }
+                <th>Latest Reservation</th>
+                <th>Upcoming Reservation</th>
+                <th hidden></th>
+            </tr>
+
+            @foreach (Pet pet in Model)
+            {
+                Customer owner = DataAccessPoint.GetCustomerById(pet.HVKUserId);
+                <tr>
+                    <th>@Html.ActionLink($"{owner.HVKUserId}: {owner.FirstName} {owner.LastName}", "ViewCustomer", "CustomerAccountManagement", new { id = owner.HVKUserId })</th>
+                    <th>
+
+                        @Html.ActionLink($"{pet.PetId}: {pet.Name}", "ViewPet", "PetManagement", new { id = pet.PetId })
+                    </th>
+                    <th>@DateTime.Now.Year / @DateTime.Now.Month / @DateTime.Now.Day</th>
+                    <th>@DateTime.Now.Year / @DateTime.Now.AddMonths(1).Month / @DateTime.Now.Day</th>
+                    <th>
+                        <a href="@Url.Action("UpdatePet", "PetManagement", new { id = pet.PetId})"><img src="~/images/pencil.png" alt="Edit" class="icon" /></a>
+                        <a href="@Url.Action("DeletePet", "PetManagement", new { id = pet.PetId})"><img src="~/images/trash-can.png" alt="Delete" class="icon" /></a>
+                    </th>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <h3>Could not find any Pet Profiles</h3>
+    }
+</div>

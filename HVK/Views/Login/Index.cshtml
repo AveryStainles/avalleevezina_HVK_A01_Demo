@@ -1,0 +1,35 @@
+﻿@model HVK.Models.LoginUserState
+
+<div>
+    <h1>
+        Login
+    </h1>
+</div>
+
+<div class="form-container">
+    <form asp-action="Index" asp-controller="Login" method="post">
+
+        <select asp-for="UserId" name="UserId" id="UserId">
+            <option>Select User Account</option>
+            @foreach (Customer customer in DataAccessPoint.GetAllCustomers())
+            {
+                <option value="@customer.HVKUserId">@customer.UserType: @customer.GetFullName</option>
+            }
+        </select>
+        <span asp-validation-for="UserId" class="invalidInputField"></span>
+
+        <div id="submitAndCancelContainer">
+            <input type="submit" id="submit" value="Login" />
+            <p id="CreateAccount">@Html.ActionLink("Create Account", "CreateAccount", "Login", null)</p>
+        </div>
+    </form>
+</div>
+
+<hr />
+
+<div>
+    <h2>Hello Gil! I made you this button to help with grading!</h2>
+    <p>@Html.ActionLink("Generate Fake Data", "GenerateData", "Login", null)</p>
+    <p>When this button is clicked and there is no data currently stored, customer and employee data will be added along with pet profiles that are randomly assigned to said accounts.</p>
+    <p>Note: I made this temporary login so that I can keep states about who is logged in, so that I can display appropriate data according to whether they are an employee or a Customer.</p>
+</div>

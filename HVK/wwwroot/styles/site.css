@@ -1,0 +1,160 @@
+﻿/* Page Defaults */
+html {
+    --light-blue: #14a7f2;
+    --dark-blue: #4e54d0;
+    --darker-blue: darkblue;
+    --magenta: #aa51a5;
+    --white: #f3f3f3;
+    --error: red;
+    --warning: lightyellow;
+    background-color: var(--white);
+    font-size: 1.3em;
+}
+
+
+/* Errors/Validation Messages */
+.field-validation-error {
+    font-size: smaller;
+    color: var(--error);
+    font-style: italic;
+}
+
+.input-validation-error {
+    background-color: var(--warning);
+    border: 2px solid var(--error);
+}
+
+
+.invalidInputField {
+    color: var(--error);
+}
+
+.validationSummaryErrors {
+    color: var(--error);
+    grid-column: 2/4;
+}
+
+    .validationSummaryErrors ul {
+        list-style: none;
+        list-style-position: inside;
+        padding-left: 0;
+    }
+
+
+/* Forms */
+.form-container > form {
+    display: flex;
+    flex-direction: column;
+    margin: 32px;
+}
+
+    .form-container > form > label {
+        margin-top: 16px;
+    }
+
+    .form-container > form > fieldset {
+        display: flex;
+        flex-direction: column;
+        margin: 32px;
+    }
+
+        .form-container > form > fieldset > label {
+            margin-top: 16px;
+        }
+
+
+/* Action Link Images */
+
+a > .icon {
+    height: 1.3em;
+    width: 1.3em;
+}
+
+    a > .icon:hover {
+        height: 1.3em;
+        width: 1.3em;
+    }
+
+/*Sear Bar*/
+.search-bar {
+    border: 4px solid var(--magenta);
+    width: fit-content;
+    margin: auto;
+}
+
+/* Tables */
+.table-container {
+    display: block;
+    margin: auto;
+    padding: 16px;
+}
+
+    .table-container > table {
+        background-color: var(--white);
+        margin: auto;
+    }
+
+    .table-container > h2 {
+        padding: 16px;
+        text-align: center;
+    }
+
+
+tr > th {
+    border: 4px solid var(--magenta);
+    padding: 16px;
+}
+
+
+
+/* Navigation Bar */
+.header .sign-out {
+    float: right;
+    font-size:1em;
+}
+
+.header > nav {
+    background-color: var(--darker-blue);
+    padding: 32px;
+}
+
+    .header > nav > a {
+        text-decoration: none;
+        margin: 0px 8px 0px 8px;
+        color: var(--white);
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+
+    /*
+    Underline Navigation buttons on hover (Link: https://stackoverflow.com/questions/75898697/how-do-i-make-an-underline-hover-like-this)
+*/
+    .header > nav > a {
+        position: relative;
+        text-decoration: none;
+        color: var(--white);
+    }
+
+        .header > nav > a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--white);
+            transform-origin: bottom center;
+            transition: transform 0.3s ease-out;
+        }
+
+        .header > nav > a:hover::before {
+            transform: scaleX(1);
+        }
+
+        .header > nav > a > .logo {
+            height: 2.5em;
+            width: 3.5em;
+            margin: 0px 8px 0px 0px;
+            padding: 0px 8px 0px 0px;
+        }

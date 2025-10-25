@@ -1,0 +1,92 @@
+﻿@model HVK.Models.Customer
+
+<div>
+    <h1>
+        Create New Account
+    </h1>
+</div>
+
+<div class="form-container">
+    <form asp-action="CreateAccount" asp-controller="Login" method="post">
+
+        <div asp-validation-summary="All" class="validationSummaryErrors"></div>
+
+        <div>
+        <label>User Type: </label>
+            @foreach (var item in Enum.GetValues(typeof(Customer.UserTypes)))
+            {
+                <label for="@item.ToString()">@item.ToString()</label>
+                <input asp-for="UserType" type="radio" name="UserType" id="@item.ToString()" value="@item" />
+            }
+        </div>
+        <span asp-validation-for="UserType" class="invalidInputField"></span>
+
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName" class="invalidInputField"></span>
+
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName" class="invalidInputField"></span>
+
+        <label asp-for="Email"></label>
+        <input asp-for="Email" placeholder="example@email.com" />
+        <span asp-validation-for="Email" class="invalidInputField"></span>
+
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="invalidInputField"></span>
+
+        <label asp-for="City"></label>
+        <input asp-for="City" />
+        <span asp-validation-for="City" class="invalidInputField"></span>
+
+        <label asp-for="Street"></label>
+        <input asp-for="Street" />
+        <span asp-validation-for="Street" class="invalidInputField"></span>
+
+        <select asp-for="Province" name="Province" id="Province">
+            @foreach (var item in Enum.GetValues(typeof(Customer.Provinces)))
+            {
+                <option value="@item.ToString()">@item.ToString()</option>
+            }
+        </select>
+        <span asp-validation-for="Province" class="invalidInputField"></span>
+
+        <label asp-for="PostalCode"></label>
+        <input asp-for="PostalCode" />
+        <span asp-validation-for="PostalCode" class="invalidInputField"></span>
+
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone" class="invalidInputField"></span>
+
+        <label asp-for="CellPhone"></label>
+        <input asp-for="CellPhone" />
+        <span asp-validation-for="CellPhone" class="invalidInputField"></span>
+
+        <fieldset>
+            <legend>Emergency Contact (optional)</legend>
+
+            <label asp-for="EmergencyContactFirstName"></label>
+            <input asp-for="EmergencyContactFirstName" />
+            <span asp-validation-for="EmergencyContactFirstName" class="invalidInputField"></span>
+
+            <label asp-for="EmergencyContactLastName"></label>
+            <input asp-for="EmergencyContactLastName" />
+            <span asp-validation-for="EmergencyContactLastName" class="invalidInputField"></span>
+
+            <label asp-for="EmergencyContactPhone"></label>
+            <input asp-for="EmergencyContactPhone" />
+            <span asp-validation-for="EmergencyContactPhone" class="invalidInputField"></span>
+
+        </fieldset>
+
+        <div id="submitAndCancelContainer">
+            <input type="submit" id="submit" value="CreateAccount" />
+            <p id="Cancel">@Html.ActionLink("Cancel", "Index", "Login", null)</p>
+        </div>
+
+    </form>
+</div>
+

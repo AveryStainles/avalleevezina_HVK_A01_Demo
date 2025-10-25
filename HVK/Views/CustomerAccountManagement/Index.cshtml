@@ -1,0 +1,70 @@
+﻿@model IEnumerable<HVK.Models.Customer>
+
+@if (ViewData["sortOwner"] == null) { ViewData["sortOwner"] = "name"; }
+
+<div>
+    <div class="pageHeader">
+        <h1>
+            Customer Account Management
+        </h1>
+        @Html.ActionLink("Create Customer Account", "CreateCustomer", "CustomerAccountManagement", null)
+    </div>
+
+    <div class="form-container search-bar">
+        <form asp-action="Index" asp-controller="CustomerAccountManagement">
+            <div>
+                <label>Find By Name:<input type="text" name="searchString" id="searchString" /></label>
+                <input type="submit" name="search" value="search" />
+                <a asp-action="Index">Clear Search</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        @if (Model.Count() == 0)
+        {
+            <h2>No Customer Found</h2>
+        }
+        else
+        {
+            <h2>View All Customers</h2>
+        }
+        <table>
+            @* Table Header *@
+            <tr>
+                <th><a asp-action="Index" asp-controller="CustomerAccountManagement" asp-route-sortOrder="@ViewData["sortOwner"]">Customer Name</a></th>
+                <th>Pet Name</th>
+                <th>Latest Reservation</th>
+                <th>Upcoming Reservation</th>
+                <th hidden></th>
+            </tr>
+
+            @* Table Content *@
+            @foreach (Customer customer in Model)
+            {
+                <tr>
+                    <th>@Html.ActionLink($"{customer.HVKUserId}: {customer.FirstName} {customer.LastName}", "ViewCustomer", "CustomerAccountManagement", new { id = customer.HVKUserId })</th>
+                    <th>
+                        @if ((DataAccessPoint.GetAllCustomerPets(customer.HVKUserId) ?? new List<Pet>()).Count == 0)
+                        {
+                            <p>N/A</p>
+                        }
+                        else
+                        {
+                            <ul>
+                                @foreach (var pet in DataAccessPoint.GetAllCustomerPets(customer.HVKUserId) ?? new List<Pet>())
+                                {
+                                    <li>@pet.Name</li>
+                                }
+                            </ul>
+                        }
+                    </th>
+                    <th>@DateTime.Now.Year / @DateTime.Now.Month / @DateTime.Now.Day</th>
+                    <th>@DateTime.Now.Year / @DateTime.Now.AddMonths(1).Month / @DateTime.Now.Day</th>
+                    <th><a href="@Url.Action("UpdateCustomer", "CustomerAccountManagement", new { id = customer.HVKUserId })"><img src="~/images/pencil.png" alt="Edit" class="icon" /></a></th>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <link rel="stylesheet" href="~/styles/site.css" />
+    <meta charset="utf-8" />
+    <title>Happy Valley Kennel</title>
+</head>
+<body>
+    <div class="header">
+        <nav>
+            <a href="@Url.Action("Index", "Home")"> <img class="logo" src="~/images/hvklogo.png" alt="HVK Logo" /> </a>
+            @Html.ActionLink("Home", "Index", "Home", null)
+            @Html.ActionLink("Account", "ViewCustomer", "CustomerAccountManagement", new { id = DataAccessPoint.GetLoginUserState().UserId })
+            @Html.ActionLink("Manage Pet", "Index", "PetManagement", new { ownerId = DataAccessPoint.GetLoginUserState().UserId })
+            <a class="sign-out" href="@Url.Action("Index", "Login")">sign out</a>
+        </nav>
+
+    </div>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+    </footer>
+</body>
+</html>

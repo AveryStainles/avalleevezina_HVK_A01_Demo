@@ -1,0 +1,67 @@
+﻿@model HVK.Models.Pet
+
+<div class="form-container">
+    <form asp-action="CreatePet" asp-controller="PetManagement">
+
+        <div asp-validation-summary="All" class="validationSummaryErrors"></div>
+
+        <input asp-for="HVKUserId" type="hidden" value="@ViewData["ownerId"]" />
+
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="invalidInputField"></span>
+
+        <div>
+            <label asp-for="Gender"></label>
+            @foreach (var item in Enum.GetValues(typeof(Pet.AnimalGender)))
+            {
+                @item.ToString() <input asp-for="Gender" type="radio" name="Gender" id="@item.ToString()" value="@item" />
+            }
+        </div>
+        <span asp-validation-for="Gender" class="invalidInputField"></span>
+
+
+        <label asp-for="Breed"></label>
+        <input asp-for="Breed" />
+        <span asp-validation-for="Breed" class="invalidInputField"></span>
+
+        <label asp-for="Birthyear"></label>
+        <input asp-for="Birthyear" />
+        <span asp-validation-for="Birthyear" class="invalidInputField"></span>
+
+        <label asp-for="SpecialNotes"></label>
+        <textarea asp-for="SpecialNotes" placeholder="Takes 5mg of medication"></textarea>
+
+        <div>
+            <label asp-for="DogSize"></label><br />
+            @foreach (var item in Enum.GetValues(typeof(Pet.Size)))
+            {
+                @item.ToString() <input asp-for="DogSize" type="radio" name="DogSize" id="@item.ToString()" value="@item" />
+            }
+            <span asp-validation-for="DogSize" class="invalidInputField"></span>
+        </div>
+
+        <div class="checkbox-container">
+            <label asp-for="Climber"></label>
+            <input asp-for="Climber" type="checkbox" />
+            <span asp-validation-for="Climber" class="invalidInputField"></span>
+
+            <label asp-for="Barker"></label>
+            <input asp-for="Barker" type="checkbox" />
+            <span asp-validation-for="Barker" class="invalidInputField"></span>
+
+            <label asp-for="Sterilized"></label>
+            <input asp-for="Sterilized" type="checkbox" />
+            <span asp-validation-for="Sterilized" class="invalidInputField"></span>
+        </div>
+
+
+
+
+        <div id="submitAndCancelContainer">
+            <input type="submit" id="submit" value="Add Pet" />
+            <p id="cancel">@Html.ActionLink("Cancel", "Index", "CustomerAccountManagement", null)</p>
+        </div>
+
+    </form>
+</div>

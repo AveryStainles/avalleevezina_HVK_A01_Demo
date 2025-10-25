@@ -1,0 +1,35 @@
+﻿
+<div>
+    @if (DataAccessPoint.GetLoginUserState().UserId > -1)
+    {
+        <h1> Hello @DataAccessPoint.GetCustomerById(DataAccessPoint.GetLoginUserState().UserId).GetFullName.ToString()!</h1>
+    }
+    else
+    {
+        <h1> Hello @Enum.GetName(DataAccessPoint.GetLoginUserState().UserType).ToString()!</h1>
+    }
+</div>
+
+<div>
+    @if (DataAccessPoint.GetLoginUserState().UserType == Customer.UserTypes.Employee)
+    {
+        <div class="form-container search-bar">
+            <form asp-action="Search" asp-controller="Home" method="get">
+                <div>
+                    <label>Find By Name:<input type="text" name="searchString" id="searchString" /></label>
+                    <input type="submit" name="search" value="Search" />
+                    <a asp-action="Index">Clear Search</a>
+                </div>
+            </form>
+        </div>
+        <p>@Html.ActionLink("Start Pet Reservation", "Index", "ManageReservation", null)</p>
+        <p>@Html.ActionLink("End Pet Reservation", "Index", "ManageReservation", null)</p>
+        <hr />
+        <p>@Html.ActionLink("View All Accounts", "Index", "CustomerAccountManagement", null)</p>
+        <p>@Html.ActionLink("View All Pet", "Index", "PetManagement", null)</p>
+    }
+    <p>@Html.ActionLink("Manage Account", "ViewCustomer", "CustomerAccountManagement", new { id = DataAccessPoint.GetLoginUserState().UserId })</p>
+    <p>@Html.ActionLink("Pet Profil", "Index", "PetManagement", new { ownerId = DataAccessPoint.GetLoginUserState().UserId })</p>
+
+    <hr />
+</div>
